@@ -21,17 +21,23 @@ int main() {
     Mat im_gray;
     cvtColor(im, im_gray, COLOR_BGR2GRAY);
 
-    im_gray.convertTo(im_gray, CV_8U);
-    namedWindow("Original image", WINDOW_AUTOSIZE);
     imshow("Original Image", im_gray);
 
     Mat Emin;
     Mat Emax;
     stressGray(im_gray, Emin, Emax, 50, 8, 20);
 
+    Mat im_gray_contrast_enhanced;
+    im_gray_contrast_enhanced.create(im_gray.size(), im_gray.type());
+    for (int i = 0; i < im_gray.rows; i++) {
+        for (int j = 0; j < im_gray.cols; j++) {
+            double normalized_value = (im_gray.at<uchar>(i, j) - Emin.at<double>(i, j)) / 
+                                       (Emax.at<double>(i, j) - Emin.at<double>(i, j));
+            im_gray_contrast_enhanced.at<uchar>(i, j) = saturate_cast<uchar>(normalized_value * 255.0);
+        }
+    }
 
-    //namedWindow("Local contrast enhancement", WINDOW_AUTOSIZE);
-    //imshow("Local contrast enhancement", (im_gray - Emin) / (Emax - Emin));
+    imshow("Local contrast enhancement", im_gray_contrast_enhanced);
 
-
+    while(cv::waitKey(1) != 27);
 }
