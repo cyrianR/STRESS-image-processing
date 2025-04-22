@@ -65,4 +65,23 @@ void stressGray(const cv::Mat input, cv::Mat& Emin, cv::Mat& Emax, const int N, 
     }
 }
 
+void stressRGB(const cv::Mat input, cv::Mat& Emin, cv::Mat& Emax, const int N, const int M, const int R){
+    
+    int n_rows = input.rows;
+    int n_cols = input.cols;
+    Emin.create(n_rows, n_cols, CV_64FC3);
+    Emax.create(n_rows, n_cols, CV_64FC3);
+    // Appliquer l'algorithme précédent sur chaque canal de l'image d'origine
+    for (int c = 0; c < input.channels(); c++){
+        cv::Mat input_c;
+        cv::extractChannel(input,input_c,c);
+        cv::Mat E_min_c,E_max_c;
+        E_min_c.create(n_rows,n_cols,CV_64F);
+        E_max_c.create(n_rows,n_cols,CV_64F);
+        stressGray(input_c,E_min_c,E_max_c,N,M,R);
+        cv::insertChannel(E_min_c,Emin,c);
+        cv::insertChannel(E_max_c,Emax,c);
+    } 
+} 
+
 
