@@ -34,11 +34,9 @@ cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, c
                 Vec3d e_max = Emax.at<Vec3d>(i, j);
                 Vec3b result;
                 for (int c = 0; c < input_im.channels(); c++){ 
-                    if(e_max[c] != e_min[c]){ 
-                        result[c] = saturate_cast<uchar>((x[c] - e_min[c])/(e_max[c]  - e_min[c])*255);
-                    }else{result[c] = saturate_cast<uchar>(x[c]); }   
+                    result[c] = saturate_cast<uchar>((x[c] - e_min[c])/(e_max[c] - e_min[c])*255);
                 } 
-                output_im.at<Vec3b>(i, j)  = result;
+                output_im.at<Vec3b>(i, j) = result;
             }
         } 
         return output_im;
