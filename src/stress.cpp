@@ -9,7 +9,7 @@
 
 using namespace std;
 
-void polarToCartesian(const int r, const int teta, int& x, int& y) {
+void polarToCartesian(const int r, const double teta, double& x, double& y) {
     x = r * cos(teta);
     y = r * sin(teta);
 }
@@ -36,10 +36,10 @@ void stressGray(const cv::Mat input, cv::Mat& Emin, cv::Mat& Emax, const int N, 
                     while (!valid_rand_pixel) {
                         int d = rand() % R;
                         double teta = ((double)rand() / RAND_MAX) * 2 * CV_PI - CV_PI;
-                        int abs, ord;
-                        polarToCartesian(d, teta, abs, ord);
-                        abs = i + round(abs);
-                        ord = j + round(ord);
+                        double abs_pol, ord_pol ;
+                        polarToCartesian(d,teta,abs_pol,ord_pol);
+                        int abs = i + round(abs_pol);
+                        int ord = j + round(ord_pol);
                         if (abs >= 0 && abs < n_rows && ord >= 0 && ord < n_cols && abs != i && ord != j) {
                             rand_neighbors[k] = input.at<uchar>(abs, ord);
                             valid_rand_pixel = true;
