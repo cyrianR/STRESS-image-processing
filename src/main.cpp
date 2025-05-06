@@ -136,7 +136,21 @@ int main(int argc, char** argv) {
             cout << "Error: Could not open or find the input image" << endl;
             return -1;
         } else {
-            output_image = contrast_enhancement(image , N, M, R);
+            vector<cv::Vec2i> neighbors;
+            output_image = contrast_enhancement(image , N, M, R, neighbors);
+            // Print neighbors values
+            cout << "Neighbors:" << endl;
+            for (const auto& neighbor : neighbors) {
+                cout << "(" << neighbor[0] << ", " << neighbor[1] << ")" << endl;
+            }
+            for (int i = 0; i < neighbors.size(); i++) {
+                int x = neighbors[i][0];
+                int y = neighbors[i][1];
+                if (output_image.channels() == 1) {
+                    cvtColor(output_image, output_image, COLOR_GRAY2BGR);
+                }
+                circle(output_image, Point(x, y), 3, Scalar(0, 255, 0), -1);
+            }
             // Evaluate contrast enhancement algorithm
             if (eval) {
                 cout << "Evaluation for contrast enhancement not implemented yet" << endl;

@@ -8,11 +8,11 @@
 using namespace std;
 using namespace cv;
 
-cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, const int R) {
+cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, const int R,  std::vector<cv::Vec2i> neighbors) {
 
     if (input_im.channels() == 1) {
         cv::Mat Emin, Emax;
-        stressGray(input_im, Emin, Emax, N, M, R);
+        stressGray(input_im, Emin, Emax, N, M, R, neighbors);
         cv::Mat output_im = input_im.clone();
         for (int i = 0; i < input_im.rows; i++) {
             for (int j = 0; j < input_im.cols; j++) {
