@@ -11,6 +11,15 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
 find_package(OpenCV 4.0 REQUIRED)
 message(STATUS "OpenCV found, version ${OpenCV_VERSION}")
 
+# Find OpenMP
+find_package(OpenMP REQUIRED)
+if(OpenMP_CXX_FOUND)
+    message(STATUS "OpenMP found, enabling support.")
+    set(OpenMP_FLAGS ${OpenMP_CXX_FLAGS})
+else()
+    message(FATAL_ERROR "OpenMP not found!")
+endif()
+
 add_subdirectory(src)
 
 

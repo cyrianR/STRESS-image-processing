@@ -38,6 +38,7 @@ int main(int argc, char** argv) {
     string algorithm;
     string input_path;
     string ouptut_path;
+    string ground_truth_path;
     bool show_output = false;
     bool eval = false;
     bool save = false;
@@ -50,7 +51,7 @@ int main(int argc, char** argv) {
 
     // Command line arguments options
     static struct option long_options[] = {
-        {"eval", no_argument, 0, 'e'},
+        {"eval", required_argument, 0, 'e'},
         {"show", no_argument, 0, 'w'},
         {"save", required_argument, 0, 's'},
         {0, 0, 0, 0}
@@ -97,6 +98,7 @@ int main(int argc, char** argv) {
                 M = atoi(optarg);
                 break;
             case 'e':
+                ground_truth_path = optarg;
                 eval = true;
                 break;
             case 's':
@@ -124,7 +126,7 @@ int main(int argc, char** argv) {
     if (algorithm == "hdr") {
         cout << "HDR rendering algorithm not implemented yet." << endl;
         if (eval) {
-                cout << "Evaluation for HDR rendering not implemented yet" << endl;
+            cout << "Evaluation for HDR rendering not implemented yet" << endl;
         }
     } else if (algorithm == "contrast") {
         // Read input image and compute contrast enhancement algorithm 
@@ -136,24 +138,22 @@ int main(int argc, char** argv) {
             cout << "Error: Could not open or find the input image" << endl;
             return -1;
         } else {
-            vector<cv::Vec2i> neighbors;
-            output_image = contrast_enhancement(image , N, M, R, neighbors);
-            // Print neighbors values
-            cout << "Neighbors:" << endl;
-            for (const auto& neighbor : neighbors) {
-                cout << "(" << neighbor[0] << ", " << neighbor[1] << ")" << endl;
-            }
-            for (int i = 0; i < neighbors.size(); i++) {
-                int x = neighbors[i][0];
-                int y = neighbors[i][1];
-                if (output_image.channels() == 1) {
-                    cvtColor(output_image, output_image, COLOR_GRAY2BGR);
-                }
-                circle(output_image, Point(x, y), 3, Scalar(0, 255, 0), -1);
-            }
+            output_image = contrast_enhancement(image , N, M, R);
             // Evaluate contrast enhancement algorithm
             if (eval) {
-                cout << "Evaluation for contrast enhancement not implemented yet" << endl;
+                if (ground_truth_path.empty()) {
+                    cout << "Error: No ground truth path specified." << endl;
+                    print_help();
+                    return 1;
+                } else {
+                    Mat ground_truth_image = imread(ground_truth_path, IMREAD_UNCHANGED);
+                    if (ground_truth_image.empty()) {
+                        cout << "Error: Could not open or find the ground truth image" << endl;
+                        return -1;
+                    } else {
+                        contrast_evaluation(output_image, ground_truth_image, N, M, R);
+                    }
+                }
             }
         }
     } else {

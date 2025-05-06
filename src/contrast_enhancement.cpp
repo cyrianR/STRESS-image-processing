@@ -1,19 +1,22 @@
 #include "contrast_enhancement.hpp"
 #include "stress.hpp"
+#include "utils.hpp"
 
 #include <iostream>
-
 #include <opencv2/core.hpp>
 
 using namespace std;
 using namespace cv;
 
-cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, const int R,  std::vector<cv::Vec2i> neighbors) {
+cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, const int R) {
 
     if (input_im.channels() == 1) {
         cv::Mat Emin, Emax;
-        stressGray(input_im, Emin, Emax, N, M, R, neighbors);
+        stressGray(input_im, Emin, Emax, N, M, R);
         cv::Mat output_im = input_im.clone();
+        #pragma omp parallel
+        {
+        #pragma omp for collapse(2)
         for (int i = 0; i < input_im.rows; i++) {
             for (int j = 0; j < input_im.cols; j++) {
                 double x = input_im.at<uchar>(i, j);
@@ -22,11 +25,15 @@ cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, c
                 output_im.at<uchar>(i, j) = cv::saturate_cast<uchar>((x - e_min) / (e_max - e_min) * 255);
             }
         }
+        }
         return output_im;
     } else {
         Mat Emin,Emax;
         stressRGB(input_im,Emin,Emax,N,M,R);
         Mat output_im = input_im.clone();
+        #pragma omp parallel
+        {
+        #pragma omp for collapse(2)
         for (int i = 0; i < input_im.rows; i++) {
             for (int j = 0; j < input_im.cols; j++) {
                 Vec3b x = input_im.at<Vec3b>(i, j);
@@ -39,7 +46,24 @@ cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, c
                 output_im.at<Vec3b>(i, j) = result;
             }
         } 
+        }
         return output_im;
     }
+
+}
+
+
+void contrast_evaluation(const cv::Mat result_im, const cv::Mat ground_truth_im, const int N, const int M, const int R) {
+
+    cout << "---------------------------------------------" << endl;
+    cout << "Evaluating contrast enhancement algorithm :" << endl;
+    cout << "N: " << N << endl;
+    cout << "M: " << M << endl;
+    cout << "R: " << R << endl;
+
+    cout << " " << endl ;
+
+    double psnr = PSNR(result_im, ground_truth_im);
+    cout << "PSNR: " << psnr << " dB" << endl;
 
 }
