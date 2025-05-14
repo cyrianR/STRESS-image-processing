@@ -138,9 +138,8 @@ int main(int argc, char** argv) {
             cout << "Error: Could not open or find the input image" << endl;
             return -1;
         } else {
-            output_image = contrast_enhancement(image , N, M, R);
-            // Evaluate contrast enhancement algorithm
             if (eval) {
+                // Evaluate contrast enhancement algorithm
                 if (ground_truth_path.empty()) {
                     cout << "Error: No ground truth path specified." << endl;
                     print_help();
@@ -151,9 +150,12 @@ int main(int argc, char** argv) {
                         cout << "Error: Could not open or find the ground truth image" << endl;
                         return -1;
                     } else {
-                        contrast_evaluation(output_image, ground_truth_image, N, M, R);
+                        contrast_evaluation(image, ground_truth_image, N, M, R);
                     }
                 }
+            } else {
+                // Compute contrast enhancement algorithm
+                output_image = contrast_enhancement(image , N, M, R);
             }
         }
     } else {

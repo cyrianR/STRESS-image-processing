@@ -57,13 +57,13 @@ void contrast_evaluation(const cv::Mat result_im, const cv::Mat ground_truth_im,
 
     cout << "---------------------------------------------" << endl;
     cout << "Evaluating contrast enhancement algorithm :" << endl;
-    cout << "N: " << N << endl;
-    cout << "M: " << M << endl;
-    cout << "R: " << R << endl;
 
     cout << " " << endl ;
 
     double psnr = PSNR(result_im, ground_truth_im);
     cout << "PSNR: " << psnr << " dB" << endl;
+
+    cv::Scalar ssim = SSIM(result_im, ground_truth_im);
+    cout << "SSIM: " << ssim << endl;
 
 }
