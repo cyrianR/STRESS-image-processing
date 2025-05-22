@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
 
 using namespace std;
 using namespace cv;
@@ -66,4 +67,21 @@ void contrast_evaluation(const cv::Mat result_im, const cv::Mat ground_truth_im,
     cv::Scalar ssim = SSIM(result_im, ground_truth_im);
     cout << "SSIM: " << ssim << endl;
 
+}
+
+
+void applyCLAHE(const cv::Mat& input, cv::Mat& output) {
+    cv::Mat labImage;
+    cv::cvtColor(input, labImage, cv::COLOR_BGR2Lab);
+
+    cv::Mat labChannels_0;
+    cv::extractChannel(labImage, labChannels_0,0);
+    //Appliquer CLAHE uniquement sur le canal L
+    cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(4.0);
+    clahe->apply(labChannels_0, labChannels_0);
+    
+
+    cv::insertChannel(labChannels_0, labImage,0);
+    cv::cvtColor(labImage, output, cv::COLOR_Lab2BGR);
+    
 }

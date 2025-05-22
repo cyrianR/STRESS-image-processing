@@ -71,7 +71,10 @@ int main(int argc, char** argv) {
             algorithm = "hdr";
         } else if (first_arg == "contrast") {
             algorithm = "contrast";
-        } else {
+        } else if (first_arg == "clahe") {
+            algorithm = "clahe";
+        } 
+        else {
             cout << "Error: Unknown algorithm: " << first_arg << endl;
             print_help();
             return 1;
@@ -120,7 +123,12 @@ int main(int argc, char** argv) {
         cout << "Error: No input path specified." << endl;
         print_help();
         return 1;
-    }
+    }        
+    Mat image = imread(input_path, IMREAD_UNCHANGED);
+    if (image.empty()) {
+        cout << "Error: Could not open or find the input image" << endl;
+        return -1;
+    } else {
 
     // Compute the chosen algorithm on the input image(s)
     if (algorithm == "hdr") {
@@ -130,35 +138,30 @@ int main(int argc, char** argv) {
         }
     } else if (algorithm == "contrast") {
         // Read input image and compute contrast enhancement algorithm 
-        Mat image = imread(input_path, IMREAD_UNCHANGED);
-        if (show_output) {
-            imshow("Source Image", image);
-        }
-        if (image.empty()) {
-            cout << "Error: Could not open or find the input image" << endl;
-            return -1;
-        } else {
-            if (eval) {
-                // Evaluate contrast enhancement algorithm
-                if (ground_truth_path.empty()) {
-                    cout << "Error: No ground truth path specified." << endl;
-                    print_help();
-                    return 1;
-                } else {
-                    Mat ground_truth_image = imread(ground_truth_path, IMREAD_UNCHANGED);
-                    if (ground_truth_image.empty()) {
-                        cout << "Error: Could not open or find the ground truth image" << endl;
-                        return -1;
-                    } else {
-                        contrast_evaluation(image, ground_truth_image, N, M, R);
-                    }
-                }
+        if (eval) {
+            // Evaluate contrast enhancement algorithm
+            if (ground_truth_path.empty()) {
+                cout << "Error: No ground truth path specified." << endl;
+                print_help();
+                return 1;
             } else {
-                // Compute contrast enhancement algorithm
-                output_image = contrast_enhancement(image , N, M, R);
+                Mat ground_truth_image = imread(ground_truth_path, IMREAD_UNCHANGED);
+                if (ground_truth_image.empty()) {
+                    cout << "Error: Could not open or find the ground truth image" << endl;
+                    return -1;
+                } else {
+                    contrast_evaluation(image, ground_truth_image, N, M, R);
+                }
             }
+        } else {
+            // Compute contrast enhancement algorithm
+            output_image = contrast_enhancement(image , N, M, R);
         }
-    } else {
+    } 
+    else if (algorithm == "clahe"){
+            applyCLAHE(image, output_image);
+        } 
+    else {
         cout << "Error: Unknown algorithm: " << algorithm << endl;
         print_help();
         return 1;
@@ -179,10 +182,11 @@ int main(int argc, char** argv) {
 
     // Show output image
     if (show_output) {
+        imshow("Source Image", image);
         imshow("Resulting Image", output_image);
         // Wait until esc pressed
         while(cv::waitKey(1) != 27);
-    }
-
+    } 
+    } 
     return 0;
 }

@@ -17,7 +17,6 @@ void polarToCartesian(const int r, const double teta, double& x, double& y) {
 
 void stressGray(const cv::Mat input, cv::Mat& Emin, cv::Mat& Emax, const int N, const int M, const int R) {
 
-    // TODO Check if the input image is grayscale   
 
     int n_rows = input.rows;
     int n_cols = input.cols;
@@ -87,7 +86,6 @@ void stressRGB(const cv::Mat input, cv::Mat& Emin, cv::Mat& Emax, const int N, c
     for (int c = 0; c < input.channels(); c++){
         cv::Mat input_c,E_min_c,E_max_c;
         cv::extractChannel(input,input_c,c);
-        vector<cv::Vec2i> neighbors;
         stressGray(input_c,E_min_c,E_max_c,N,M,R);
         cv::insertChannel(E_min_c,Emin,c);
         cv::insertChannel(E_max_c,Emax,c);
