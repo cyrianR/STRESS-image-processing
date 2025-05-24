@@ -8,7 +8,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
-
+#include <time.h>
 #include "contrast_enhancement.hpp"
 
 using namespace cv;
@@ -155,7 +155,11 @@ int main(int argc, char** argv) {
             }
         } else {
             // Compute contrast enhancement algorithm
+            time_t t = time(nullptr);
             output_image = contrast_enhancement(image , N, M, R);
+            t = time(nullptr) - t;
+            printf("Temps pris :");
+            printf("%f secondes\n", (double) t);
         }
     } 
     else if (algorithm == "clahe"){

@@ -65,7 +65,10 @@ void contrast_evaluation(const cv::Mat result_im, const cv::Mat ground_truth_im,
     cout << "PSNR: " << psnr << " dB" << endl;
 
     cv::Scalar ssim = SSIM(result_im, ground_truth_im);
-    cout << "SSIM: " << ssim << endl;
+    double ssim_moyen = (double) 1/3*(ssim[0] + ssim[1] + ssim[2]);
+    cout << "SSIM moyen : " << ssim_moyen << endl;
+    double ssim_l = SSIM_lum(result_im, ground_truth_im);
+    cout << "SSIM_L : "  << ssim_l << endl;
 
 }
 

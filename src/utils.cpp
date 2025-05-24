@@ -71,3 +71,20 @@ cv::Scalar SSIM(const cv::Mat& i1, const cv::Mat& i2) {
     cv::Scalar mssim = mean( ssim_map ); // mssim = average of ssim map
     return mssim;
 }
+
+double SSIM_lum(const cv::Mat& i1, const cv::Mat& i2){
+  
+    cv::Mat I1_Lab, I2_Lab;
+    cv::Mat I1_L, I2_L;
+
+    cv::cvtColor(i1, I1_Lab, cv::COLOR_BGR2Lab);
+    cv::cvtColor(i2, I2_Lab, cv::COLOR_BGR2Lab);
+
+    // Seulement sur la Luminance
+    cv::extractChannel(I1_Lab, I1_L, 0);
+    cv::extractChannel(I2_Lab, I2_L, 0);
+
+    cv::Scalar ssim_l = SSIM(I1_L,I2_L);
+    return ssim_l[0];
+
+} 
