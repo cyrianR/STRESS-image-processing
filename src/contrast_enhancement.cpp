@@ -10,7 +10,6 @@ using namespace std;
 using namespace cv;
 
 cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, const int R) {
-
     if (input_im.channels() == 1) {
         cv::Mat Emin, Emax;
         stressGray(input_im, Emin, Emax, N, M, R);
@@ -50,12 +49,10 @@ cv::Mat contrast_enhancement(const cv::Mat input_im, const int N, const int M, c
         }
         return output_im;
     }
-
 }
 
 
 void contrast_evaluation(const cv::Mat result_im, const cv::Mat ground_truth_im, const int N, const int M, const int R) {
-
     cout << "---------------------------------------------" << endl;
     cout << "Evaluating contrast enhancement algorithm :" << endl;
 
@@ -69,11 +66,10 @@ void contrast_evaluation(const cv::Mat result_im, const cv::Mat ground_truth_im,
     cout << "SSIM moyen : " << ssim_moyen << endl;
     double ssim_l = SSIM_lum(result_im, ground_truth_im);
     cout << "SSIM_L : "  << ssim_l << endl;
-
 }
 
 
-void applyCLAHE(const cv::Mat& input, cv::Mat& output) {
+void compute_CLAHE(const cv::Mat& input, cv::Mat& output) {
     cv::Mat labImage;
     cv::cvtColor(input, labImage, cv::COLOR_BGR2Lab);
 
@@ -86,5 +82,4 @@ void applyCLAHE(const cv::Mat& input, cv::Mat& output) {
 
     cv::insertChannel(labChannels_0, labImage,0);
     cv::cvtColor(labImage, output, cv::COLOR_Lab2BGR);
-    
 }

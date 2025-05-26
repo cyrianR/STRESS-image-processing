@@ -1,6 +1,9 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 
+// PSNR and SSIM implementations comes from
+// https://docs.opencv.org/4.x/dd/d3d/tutorial_gpu_basics_similarity.html
+
 double PSNR(const cv::Mat& I1, const cv::Mat& I2) {
     cv::Mat s1;
     absdiff(I1, I2, s1);       // |I1 - I2|
@@ -73,7 +76,6 @@ cv::Scalar SSIM(const cv::Mat& i1, const cv::Mat& i2) {
 }
 
 double SSIM_lum(const cv::Mat& i1, const cv::Mat& i2){
-  
     cv::Mat I1_Lab, I2_Lab;
     cv::Mat I1_L, I2_L;
 
@@ -86,5 +88,4 @@ double SSIM_lum(const cv::Mat& i1, const cv::Mat& i2){
 
     cv::Scalar ssim_l = SSIM(I1_L,I2_L);
     return ssim_l[0];
-
 } 

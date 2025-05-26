@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <cmath>
-#include <cstdlib>
 #include <opencv2/core.hpp>
 #include <opencv2/core/matx.hpp>
 #include <random>
