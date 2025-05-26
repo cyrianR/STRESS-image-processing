@@ -82,10 +82,12 @@ Options:
   -s, --save <str>         Save the output at the given path
 ```
 
+> **WARNING** : There is a strange bug in the parsing of the options, when using short options names such as -w, -p or -t, it sometimes miss one of the options. However, when using full option names such as --show, --parallel or --time, this bug seems to disappear like magic...
+
 ## Example
 
 ```
-./bin/stress contrast -N 20 -M 20 -R 721 -w -t -p ./../images/toys.png
+./bin/stress contrast -N 20 -M 20 -R 721 --show --time --parallel ./../images/toys.png
 ```
 
 

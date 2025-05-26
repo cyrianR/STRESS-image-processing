@@ -62,11 +62,10 @@ int main(int argc, char** argv) {
     // Command line arguments options
     static struct option long_options[] = {
         {"eval", required_argument, 0, 'e'},
-        {"show", no_argument, 0, 'w'},
         {"save", required_argument, 0, 's'},
-        {"time", no_argument, 0, 't'},
+        {"show", no_argument, 0, 'w'},
         {"parallel", no_argument, 0, 'p'},
-        {0, 0, 0, 0}
+        {"time", no_argument, 0, 't'}
     };
 
     // Parse first argument specifying the algorithm or help
@@ -102,7 +101,7 @@ int main(int argc, char** argv) {
         int c = getopt_long(
             argc,
             argv,
-            "N:R:M:e:s:w:t:p",
+            "N:R:M:e:s:t:w:p",
             long_options,
             &option_index);
         if (c == -1) break;
