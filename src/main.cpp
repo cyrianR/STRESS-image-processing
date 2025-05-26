@@ -18,7 +18,7 @@ using namespace std;
 
 // Print help message
 void print_help() {
-    cout << "Usage: ./stress <algorithm> [options] <input>" << endl;
+    cout << "Usage: stress <algorithm> [options] <input>" << endl;
     cout << "Algorithms:" << endl;
     cout << "  hdr                      High Dynamic Range Rendering with STRESS" << endl;
     cout << "  contrast                 Local Contrast Enhancement with STRESS" << endl;
@@ -28,12 +28,12 @@ void print_help() {
     cout << "Options:" << endl;
     cout << "  -h, --help               Show this help message" << endl;
     cout << "  -N <int>                 Set N (default: 100)" << endl;
-    cout << "  -R <int>                 Set R (default: 300)" << endl;
     cout << "  -M <int>                 Set M (default: 20)" << endl;
-    cout << "  -w, --show               Show the output image (default: true)" << endl;
+    cout << "  -R <int>                 Set R (default: 300)" << endl;
+    cout << "  -w, --show               Show the output image" << endl;
     cout << "  -e, --eval <str>         Evaluate the algorithm by comparing to the given groundtruth" << endl;
-    cout << "  -t, --time               Show the time taken by the algorithm (default: true)" << endl;
-    cout << "  -p, --parallel           Use parallel processing (default: true)" << endl;
+    cout << "  -t, --time               Show the time taken by the algorithm" << endl;
+    cout << "  -p, --parallel           Use parallel processing" << endl;
     cout << "  -s, --save <str>         Save the output at the given path" << endl;
 }
 
@@ -44,10 +44,10 @@ int main(int argc, char** argv) {
     string input_path;
     string ouptut_path;
     string ground_truth_path;
-    bool show_output = true;
+    bool show_output = false;
     bool eval = false;
-    bool parallel = true;
-    bool show_time = true;
+    bool parallel = false;
+    bool show_time = false;
     bool save = false;
     int N = 100;
     int M = 20;
