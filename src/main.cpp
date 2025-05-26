@@ -193,7 +193,7 @@ int main(int argc, char** argv) {
         } else {
             // Compute contrast enhancement algorithm with STRESS
             elapsed_time = measure_execution_time([&]() {
-                output_image = contrast_enhancement(image, 50, 8, 20);
+                output_image = contrast_enhancement(image, N, M, R);
             }, show_time);
         }
     } else if (algorithm == "clahe") {
