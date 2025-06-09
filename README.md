@@ -1,7 +1,9 @@
 # STRESS
 
 This project implements the Spatio-Temporal Retinex-Inspired Envelope with Stochastic
-Sampling algorithm in C++, an application for image contrast enhancement for grayscale and color images and some metrics in order to evaluate this algorithm and compare it with gimp implementation.
+Sampling algorithm in C++ with parallelization using OpenMP. We also implemented an application for image contrast enhancement of grayscale and color images and some metrics in order to evaluate this algorithm and compare it with gimp implementation.
+
+The project specification can be found in [project.pdf](project.pdf) and the file [project.pdf](project.pdf) contains the slides used to present our work.
 
 The LOw Light paired dataset (LOL) was used to test our implementation. It contains images with very low exposures and high exposures. Our goal is to process low exposed images into better looking images with higher exposure and nice contrast.
 
